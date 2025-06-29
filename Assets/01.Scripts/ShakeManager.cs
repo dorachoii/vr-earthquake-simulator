@@ -7,7 +7,7 @@ public class ShakeManager : MonoBehaviour
     public static ShakeManager Instance;
 
     [Header("Shake Settings")]
-    [SerializeField] private float shakeDuration = 5f; // 흔들림 지속 시간
+    [SerializeField] private float shakeDuration = 2f; // 흔들림 지속 시간
     [SerializeField] private float shakeIntensity = 0.1f; // 흔들림 강도
     [SerializeField] private float shakeFrequency = 10f; // 흔들림 빈도 (초당 횟수)
     
