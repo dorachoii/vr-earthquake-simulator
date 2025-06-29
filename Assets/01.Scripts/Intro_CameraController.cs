@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class IntroCameraController : MonoBehaviour
+public class Intro_CameraController : MonoBehaviour
 {
     public Camera shakeCam;
     public Camera mainCam;
@@ -15,15 +15,10 @@ public class IntroCameraController : MonoBehaviour
     private float elapsedShakeTime = 0f;
     private Vector3 originalShakeCamOffset;
 
-    public IntroScreenFader fader;
+    public Intro_ScreenFader fader;
 
     void Start()
     {
-        if (fader == null)
-        {
-            Debug.LogWarning("IntroScreenFader not assigned!");
-        }
-
         shakeCam.gameObject.SetActive(true);
         mainCam.gameObject.SetActive(false);
         originalShakeCamOffset = shakeCam.transform.localPosition - transform.position;

@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class IntroScreenFader : MonoBehaviour
+public class Intro_ScreenFader : MonoBehaviour
 {
     Image fadeImage;
     public float fadeDuration = 1.5f;
