@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class IntroCameraController : MonoBehaviour
@@ -16,8 +15,15 @@ public class IntroCameraController : MonoBehaviour
     private float elapsedShakeTime = 0f;
     private Vector3 originalShakeCamOffset;
 
+    public IntroScreenFader fader;
+
     void Start()
     {
+        if (fader == null)
+        {
+            Debug.LogWarning("IntroScreenFader not assigned!");
+        }
+
         shakeCam.gameObject.SetActive(true);
         mainCam.gameObject.SetActive(false);
         originalShakeCamOffset = shakeCam.transform.localPosition - transform.position;
@@ -25,28 +31,39 @@ public class IntroCameraController : MonoBehaviour
 
     void Update()
     {
-        if (isMoving)
+        if (!isMoving) return;
+
+        // 카메라 이동
+        transform.position = Vector3.MoveTowards(transform.position, stopPoint.transform.position, moveSpeed * Time.deltaTime);
+
+        // 흔들림
+        float offsetX = Random.Range(-shakeRange, shakeRange);
+        Vector3 shakenPos = transform.position + originalShakeCamOffset + new Vector3(offsetX, 0, 0);
+        shakeCam.transform.position = shakenPos;
+
+        elapsedShakeTime += Time.deltaTime;
+
+        if (Vector3.Distance(transform.position, stopPoint.transform.position) < 0.01f || elapsedShakeTime > shakeDuration)
         {
-            transform.position = Vector3.MoveTowards(transform.position, stopPoint.transform.position, moveSpeed * Time.deltaTime);
-
-            float offsetX = Random.Range(-shakeRange, shakeRange);
-            Vector3 shakenPos = transform.position + originalShakeCamOffset + new Vector3(offsetX, 0, 0);
-            shakeCam.transform.position = shakenPos;
-
-            elapsedShakeTime += Time.deltaTime;
-
-            if (Vector3.Distance(transform.position, stopPoint.transform.position) < 0.01f || elapsedShakeTime > shakeDuration)
-            {
-                isMoving = false;
-                EndSequence();
-            }
+            isMoving = false;
+            StartCoroutine(DoCameraSwitchWithFade());
         }
     }
 
-    void EndSequence()
+    IEnumerator DoCameraSwitchWithFade()
     {
-        shakeCam.transform.position = transform.position + originalShakeCamOffset;
+        if (fader != null)
+        {
+            fader.StartFadeOut();
+            yield return new WaitForSeconds(fader.fadeDuration);
+        }
+
         shakeCam.gameObject.SetActive(false);
         mainCam.gameObject.SetActive(true);
+
+        if (fader != null)
+        {
+            fader.StartFadeIn();
+        }
     }
 }
