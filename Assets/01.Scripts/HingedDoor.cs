@@ -29,11 +29,6 @@ public class HingedDoor : MonoBehaviour
         endRot = startRot * Quaternion.Euler(rotationOffset);
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space)) Toggle();
-    }
-
     public void Toggle()
     {
         StartCoroutine(RotateCoroutine());
