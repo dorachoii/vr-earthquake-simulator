@@ -18,9 +18,6 @@ public class MissionManager : MonoBehaviour
     [Header("Mission Data")]
     [SerializeField] private List<MissionData> missions = new List<MissionData>();
 
-    [Header("Debug")]
-    [SerializeField] private bool showDebugLogs = true;
-
     [SerializeField] private MissionUIManager missionUIManager;
 
     private int currentMissionIndex = 0;
@@ -72,9 +69,6 @@ public class MissionManager : MonoBehaviour
         {
             missions[i].isCompleted = false;
         }
-
-        if (showDebugLogs)
-            Debug.Log($"[MissionManager] Initialized {missions.Count} missions");
     }
 
 
@@ -100,9 +94,6 @@ public class MissionManager : MonoBehaviour
         missions.Add(new MissionData { missionState = MissionState.tablet, missionText = "Check Tablet" });
         missions.Add(new MissionData { missionState = MissionState.Escape, missionText = "Escape!" });
         missions.Add(new MissionData { missionState = MissionState.Complete, missionText = "Mission Complete!" });
-
-        if (showDebugLogs)
-            Debug.Log("[MissionManager] Created default missions");
     }
 
     public void CompleteCurrentMission()
@@ -110,10 +101,6 @@ public class MissionManager : MonoBehaviour
         if (currentMissionIndex < missions.Count)
         {
             missions[currentMissionIndex].isCompleted = true;
-
-            if (showDebugLogs)
-                Debug.Log($"[MissionManager] Completed mission: {missions[currentMissionIndex].missionText}");
-
             NextMission();
         }
     }
@@ -126,15 +113,10 @@ public class MissionManager : MonoBehaviour
         {
             GameManager.Instance.SetMission(missions[currentMissionIndex].missionState);
             UpdateMissionUI();
-
-            if (showDebugLogs)
-                Debug.Log($"[MissionManager] Next mission: {missions[currentMissionIndex].missionText}");
         }
         else
         {
             GameManager.Instance.SetGameState(GameState.Escape);
-            if (showDebugLogs)
-                Debug.Log("[MissionManager] All missions completed!");
         }
     }
 

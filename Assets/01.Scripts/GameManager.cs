@@ -10,7 +10,6 @@ public enum GameState
 
 public enum MissionState
 {
-    debris,
     slippers,
     radio,
     fusebox,
@@ -52,7 +51,7 @@ public class GameManager : MonoBehaviour
         }
 
         SetGameState(GameState.Earthquake);
-        SetMission(MissionState.debris);
+        SetMission(MissionState.slippers);
     }
 
     public void SetGameState(GameState state)
@@ -60,7 +59,6 @@ public class GameManager : MonoBehaviour
         GameState previousState = currentGameState;
         currentGameState = state;
 
-        // 상태 변경에 따른 흔들림 제어
         HandleShakeOnStateChange(previousState, state);
     }
 
@@ -81,9 +79,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 게임 상태 변경에 따른 흔들림을 처리합니다.
-    /// </summary>
     private void HandleShakeOnStateChange(GameState previousState, GameState newState)
     {
         if (shakeManager == null) return;
@@ -93,7 +88,6 @@ public class GameManager : MonoBehaviour
             case GameState.Earthquake:
                 if (enableShakeOnEarthquake)
                 {
-                    // 지진 상태일 때 흔들림 시작
                     shakeManager.SetShakeSettings(earthquakeShakeDuration, earthquakeShakeIntensity, earthquakeShakeFrequency);
                     shakeManager.StartShake();
                     Debug.Log("Earthquake shake started!");
@@ -103,7 +97,6 @@ public class GameManager : MonoBehaviour
             case GameState.Aftershock:
                 if (enableShakeOnEarthquake)
                 {
-                    // 여진 상태일 때 약한 흔들림
                     shakeManager.SetShakeSettings(earthquakeShakeDuration * 0.5f, earthquakeShakeIntensity * 0.3f, earthquakeShakeFrequency * 0.7f);
                     shakeManager.StartShake();
                     Debug.Log("Aftershock shake started!");
@@ -111,16 +104,12 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.Escape:
-                // 탈출 상태일 때 흔들림 중지
                 shakeManager.StopShake();
                 Debug.Log("Shake stopped for escape state!");
                 break;
         }
     }
 
-    /// <summary>
-    /// 수동으로 흔들림을 시작합니다.
-    /// </summary>
     public void StartShakeManually()
     {
         if (shakeManager != null)
@@ -129,9 +118,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 수동으로 흔들림을 중지합니다.
-    /// </summary>
     public void StopShakeManually()
     {
         if (shakeManager != null)
@@ -139,18 +125,11 @@ public class GameManager : MonoBehaviour
             shakeManager.StopShake();
         }
     }
-
-    /// <summary>
-    /// 현재 흔들림 상태를 반환합니다.
-    /// </summary>
     public bool IsShaking()
     {
         return shakeManager != null && shakeManager.IsShaking();
     }
 
-    /// <summary>
-    /// 남은 흔들림 시간을 반환합니다.
-    /// </summary>
     public float GetRemainingShakeTime()
     {
         return shakeManager != null ? shakeManager.GetRemainingShakeTime() : 0f;

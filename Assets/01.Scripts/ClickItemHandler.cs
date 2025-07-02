@@ -1,16 +1,17 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 using UnityEngine.XR.Interaction.Toolkit;
 
 public class ClickItemHandler : MonoBehaviour
 {
-    public enum ClickItemType { Slippers, Switch, Door }
+    public enum ClickItemType { splippers, fusebox, door }
     public static event Action<ClickItemType> OnClickItemCompleted;
 
     public ClickItemType type;
 
-    public ActionBasedController controller;
+    ActionBasedController controller;
 
     void OnEnable()
     {
@@ -21,7 +22,7 @@ public class ClickItemHandler : MonoBehaviour
         if (action != null)
         {
             action.performed += OnActivatePerformed;
-            action.Enable(); 
+            action.Enable();
         }
     }
 
@@ -40,12 +41,12 @@ public class ClickItemHandler : MonoBehaviour
 
         switch (type)
         {
-            case ClickItemType.Slippers:
+            case ClickItemType.splippers:
                 HandleSlipperClick();
                 break;
-            case ClickItemType.Switch:
-                break;
-            case ClickItemType.Door:
+            case ClickItemType.fusebox:
+            case ClickItemType.door:
+                HandleHingedClick();
                 break;
         }
     }
@@ -55,5 +56,11 @@ public class ClickItemHandler : MonoBehaviour
         OnClickItemCompleted?.Invoke(type);
         gameObject.SetActive(false);
         Debug.Log("슬리퍼 클릭됨!");
+    }
+
+    void HandleHingedClick()
+    {
+        OnClickItemCompleted?.Invoke(type);
+        gameObject.GetComponent<HingedDoor>().Toggle();
     }
 }
