@@ -15,14 +15,13 @@ public class MissionManager : MonoBehaviour
 {
     public static MissionManager Instance;
     
-    [Header("Mission UI")]
-    [SerializeField] private TextMeshProUGUI missionTextUI;
-    
     [Header("Mission Data")]
     [SerializeField] private List<MissionData> missions = new List<MissionData>();
     
     [Header("Debug")]
     [SerializeField] private bool showDebugLogs = true;
+
+    [SerializeField] private MissionUIManager missionUIManager;
     
     private int currentMissionIndex = 0;
     
@@ -34,7 +33,14 @@ public class MissionManager : MonoBehaviour
     void Start()
     {
         InitializeMissions();
-        UpdateMissionUI();
+        if (missionUIManager != null)
+    {
+        // 최초 6개만 초기화
+        var initialMissions = missions.GetRange(0, Mathf.Min(5, missions.Count));
+        missionUIManager.InitializeMissionUI(initialMissions);
+    }
+
+    UpdateMissionUI();
     }
     
     void InitializeMissions()
@@ -53,6 +59,15 @@ public class MissionManager : MonoBehaviour
             Debug.Log($"[MissionManager] Initialized {missions.Count} missions");
     }
     
+
+void UpdateMissionUI()
+{
+    if (missionUIManager != null)
+    {
+        missionUIManager.UpdateMissionUI(missions, currentMissionIndex);
+    }
+}
+
     void CreateDefaultMissions()
     {
         missions.Clear();
@@ -63,6 +78,7 @@ public class MissionManager : MonoBehaviour
         missions.Add(new MissionData { missionState = MissionState.fusebox, missionText = "Check Fusebox" });
         missions.Add(new MissionData { missionState = MissionState.door, missionText = "Open Door" });
         missions.Add(new MissionData { missionState = MissionState.gasVelve, missionText = "Turn off Gas Valve" });
+
         missions.Add(new MissionData { missionState = MissionState.flashlight, missionText = "Get Flashlight" });
         missions.Add(new MissionData { missionState = MissionState.tablet, missionText = "Check Tablet" });
         missions.Add(new MissionData { missionState = MissionState.Escape, missionText = "Escape!" });
@@ -122,13 +138,6 @@ public class MissionManager : MonoBehaviour
         }
     }
     
-    void UpdateMissionUI()
-    {
-        if (missionTextUI != null && currentMissionIndex < missions.Count)
-        {
-            missionTextUI.text = missions[currentMissionIndex].missionText;
-        }
-    }
     
     public MissionState GetCurrentMissionState()
     {
