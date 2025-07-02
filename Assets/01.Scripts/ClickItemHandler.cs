@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -5,6 +6,8 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class ClickItemHandler : MonoBehaviour
 {
     public enum ClickItemType { Slippers, Switch, Door }
+    public static event Action<ClickItemType> OnClickItemCompleted;
+
     public ClickItemType type;
 
     public ActionBasedController controller;
@@ -49,6 +52,7 @@ public class ClickItemHandler : MonoBehaviour
 
     void HandleSlipperClick()
     {
+        OnClickItemCompleted?.Invoke(type);
         gameObject.SetActive(false);
         Debug.Log("슬리퍼 클릭됨!");
     }

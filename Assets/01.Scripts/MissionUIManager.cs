@@ -37,7 +37,8 @@ public class MissionUIManager : MonoBehaviour
 
         if (mission.isCompleted)
         {
-            text.alpha = 0.4f;
+            text.color = Color.blue;
+            text.alpha = 0.9f;
             text.fontStyle = FontStyles.Strikethrough;
         }
         else if (i == currentIndex)
