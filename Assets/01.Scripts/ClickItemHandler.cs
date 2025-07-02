@@ -1,29 +1,40 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
 
-[RequireComponent(typeof(XRSimpleInteractable))]
 public class ClickItemHandler : MonoBehaviour
 {
     public enum ClickItemType { Slippers, Switch, Door }
     public ClickItemType type;
 
-    XRSimpleInteractable interactable;
+    public ActionBasedController controller;
 
     void OnEnable()
     {
-        interactable = GetComponent<XRSimpleInteractable>();
-        interactable.selectEntered.AddListener(OnActivated);
+        if (controller == null)
+            controller = GameObject.Find("Left Controller").GetComponent<ActionBasedController>();
+
+        var action = controller.activateAction.action;
+        if (action != null)
+        {
+            action.performed += OnActivatePerformed;
+            action.Enable(); 
+        }
     }
 
     void OnDisable()
     {
-        interactable.selectEntered.RemoveListener(OnActivated);
+        var action = controller.activateAction.action;
+        if (action != null)
+        {
+            action.performed -= OnActivatePerformed;
+        }
     }
 
-    void OnActivated(SelectEnterEventArgs args)
+    private void OnActivatePerformed(InputAction.CallbackContext context)
     {
+        Debug.Log("Activate 버튼 눌림");
+
         switch (type)
         {
             case ClickItemType.Slippers:
@@ -42,4 +53,3 @@ public class ClickItemHandler : MonoBehaviour
         Debug.Log("슬리퍼 클릭됨!");
     }
 }
-
