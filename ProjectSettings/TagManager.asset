@@ -8,6 +8,7 @@ TagManager:
   - numBtn
   - grabbable
   - Ground
+  - Controller
   layers:
   - Default
   - TransparentFX

@@ -44,6 +44,7 @@ public class OutlineController : MonoBehaviour
     private void OnHoverEnter(HoverEnterEventArgs args)
     {
         GameObject targetObject = args.interactableObject.transform.gameObject;
+        Debug.Log("OnHoverEnter: " + targetObject.name);
 
         if (currentOutline != null)
         {
@@ -64,12 +65,13 @@ public class OutlineController : MonoBehaviour
             currentOutline = null;
         }
 
-         OnButtonUI(targetObject, false);
+        OnButtonUI(targetObject, false);
     }
 
     private void EnableOutline(GameObject targetObject)
     {
         Outline outline = targetObject.GetComponent<Outline>();
+        Debug.Log("Hover: EnableOutline: " + targetObject.name);
         if (outline == null)
         {
             outline = targetObject.AddComponent<Outline>();
@@ -80,8 +82,6 @@ public class OutlineController : MonoBehaviour
         outline.enabled = true;
 
         currentOutline = outline;
-
-       
     }
 
     private void OnButtonUI(GameObject targetObject, bool isOn)

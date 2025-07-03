@@ -6,19 +6,15 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class ClickItemHandler : MonoBehaviour
 {
-    public enum ClickItemType { splippers, fusebox, door }
-    public static event Action<ClickItemType> OnClickItemCompleted;
-
-    public ClickItemType type;
-
-    ActionBasedController controller;
+    ActionBasedController actionController;
+    public GameObject controller;
 
     void OnEnable()
     {
-        if (controller == null)
-            controller = GameObject.Find("Left Controller").GetComponent<ActionBasedController>();
+        actionController = controller.GetComponent<ActionBasedController>();
 
-        var action = controller.activateAction.action;
+
+        var action = actionController.activateAction.action;
         if (action != null)
         {
             action.performed += OnActivatePerformed;
@@ -26,41 +22,38 @@ public class ClickItemHandler : MonoBehaviour
         }
     }
 
+
     void OnDisable()
     {
-        var action = controller.activateAction.action;
-        if (action != null)
-        {
-            action.performed -= OnActivatePerformed;
-        }
+        var activateAction = actionController.activateAction.action;
+        if (activateAction != null)
+            activateAction.performed -= OnActivatePerformed;
     }
+
 
     private void OnActivatePerformed(InputAction.CallbackContext context)
     {
-        Debug.Log("Activate 버튼 눌림");
+        Debug.Log("actionPerformed");
+        var zoomManager = FindObjectOfType<ZoomManager>();
 
-        switch (type)
+        if (zoomManager != null)
         {
-            case ClickItemType.splippers:
-                HandleSlipperClick();
-                break;
-            case ClickItemType.fusebox:
-            case ClickItemType.door:
-                HandleHingedClick();
-                break;
+            zoomManager.EnterZoomMode(this.gameObject);
+            return;
         }
     }
 
-    void HandleSlipperClick()
-    {
-        OnClickItemCompleted?.Invoke(type);
-        gameObject.SetActive(false);
-        Debug.Log("슬리퍼 클릭됨!");
-    }
 
-    void HandleHingedClick()
-    {
-        OnClickItemCompleted?.Invoke(type);
-        gameObject.GetComponent<HingedDoor>().Toggle();
-    }
+    // void HandleSlipperClick()
+    // {
+    //     OnClickItemCompleted?.Invoke(type);
+    //     gameObject.SetActive(false);
+    //     Debug.Log("슬리퍼 클릭됨!");
+    // }
+
+    // void HandleHingedClick()
+    // {
+    //     OnClickItemCompleted?.Invoke(type);
+    //     gameObject.GetComponent<HingedDoor>().Toggle();
+    // }
 }

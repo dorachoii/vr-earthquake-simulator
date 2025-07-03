@@ -29,12 +29,12 @@ public class MissionManager : MonoBehaviour
 
     private void OnEnable()
     {
-        ClickItemHandler.OnClickItemCompleted += HandleClickItemComplete;
+        //ClickItemHandler.OnClickItemCompleted += HandleClickItemComplete;
     }
 
     void OnDisable()
     {
-        ClickItemHandler.OnClickItemCompleted -= HandleClickItemComplete;
+        //ClickItemHandler.OnClickItemCompleted -= HandleClickItemComplete;
     }
 
     void Start()
@@ -49,14 +49,14 @@ public class MissionManager : MonoBehaviour
         UpdateMissionUI();
     }
 
-    void HandleClickItemComplete(ClickItemHandler.ClickItemType type)
-    {
+    // void HandleClickItemComplete(ClickItemHandler.ClickItemType type)
+    // {
 
-        if (GetCurrentMissionState().ToString().ToLower() == type.ToString().ToLower())
-        {
-            CompleteCurrentMission();
-        }
-    }
+    //     if (GetCurrentMissionState().ToString().ToLower() == type.ToString().ToLower())
+    //     {
+    //         CompleteCurrentMission();
+    //     }
+    // }
 
     void InitializeMissions()
     {

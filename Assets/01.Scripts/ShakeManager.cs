@@ -130,8 +130,6 @@ public class ShakeManager : MonoBehaviour
                     kvp.Value.angularVelocity = Vector3.zero;
                 }
             }
-            
-            Debug.Log("Shake stopped!");
         }
     }
 

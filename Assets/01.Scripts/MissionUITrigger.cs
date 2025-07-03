@@ -38,7 +38,7 @@ public class MissionUITrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"{gameObject.name}에 {other.name}이 부딪혔고 현재 미션은 {GameManager.Instance.currentMission}이며, 이 오브젝트의 미션은 {thisMission}, 캔버스는 {canvasName}");
+        //Debug.Log($"{gameObject.name}에 {other.name}이 부딪혔고 현재 미션은 {GameManager.Instance.currentMission}이며, 이 오브젝트의 미션은 {thisMission}, 캔버스는 {canvasName}");
 
         if (other.CompareTag("Player") && GameManager.Instance.currentMission == thisMission)
         {

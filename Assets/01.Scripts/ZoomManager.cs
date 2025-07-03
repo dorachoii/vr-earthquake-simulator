@@ -11,6 +11,7 @@ public class ZoomManager : MonoBehaviour
 
     private bool isZoomedIn = false;
     private Camera activeZoomCamera = null;
+    public bool IsZoomedIn => isZoomedIn;
 
     void Start()
     {
@@ -21,6 +22,9 @@ public class ZoomManager : MonoBehaviour
             if (cam != null) cam.gameObject.SetActive(false);
     }
 
+    private GameObject currentTargetObject;
+    public GameObject CurrentTarget => currentTargetObject;
+
     public void EnterZoomMode(GameObject targetObject)
     {
         if (isZoomedIn) return;
@@ -28,11 +32,12 @@ public class ZoomManager : MonoBehaviour
         activeZoomCamera = FindZoomCameraForTarget(targetObject);
         if (activeZoomCamera == null) return;
 
+        currentTargetObject = targetObject;
         isZoomedIn = true;
 
         mainCamera?.gameObject.SetActive(false);
         activeZoomCamera.gameObject.SetActive(true);
-        if (xrRayInteractor != null) xrRayInteractor.enabled = false;
+        xrRayInteractor.enabled = false;
         zoomInputUI?.SetActive(true);
     }
 
@@ -41,20 +46,32 @@ public class ZoomManager : MonoBehaviour
         if (!isZoomedIn) return;
 
         mainCamera?.gameObject.SetActive(true);
-        if (activeZoomCamera != null) activeZoomCamera.gameObject.SetActive(false);
-        if (xrRayInteractor != null) xrRayInteractor.enabled = true;
+        activeZoomCamera?.gameObject.SetActive(false);
+        xrRayInteractor.enabled = true;
         zoomInputUI?.SetActive(false);
 
         activeZoomCamera = null;
+        currentTargetObject = null;
         isZoomedIn = false;
     }
 
     private Camera FindZoomCameraForTarget(GameObject targetObject)
-    {
-        foreach (var cam in zoomCameras)
-            if (cam != null && cam.name.Contains(targetObject.name))
-                return cam;
+{
+    string targetName = targetObject.name;
 
-        return null;
+    if (targetName.StartsWith("@"))
+        targetName = targetName.Substring(1); 
+
+    Debug.Log($"[ZoomManager] Searching for ZoomCam matching: {targetName}");
+
+    foreach (var cam in zoomCameras)
+    {
+        if (cam != null && cam.name.Contains(targetName))
+            return cam;
     }
+
+    Debug.LogWarning($"[ZoomManager] No zoom camera found for: {targetName}");
+    return null;
+}
+
 }
