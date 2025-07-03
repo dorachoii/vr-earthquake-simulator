@@ -4,7 +4,7 @@ using TMPro;
 public enum GameState
 {
     Earthquake,
-    Aftershock, //여진
+    Aftershock, 
     Escape
 }
 
