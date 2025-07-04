@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using System.Collections;
 
 public class ZoomManager : MonoBehaviour
 {
@@ -39,9 +40,21 @@ public class ZoomManager : MonoBehaviour
         activeZoomCamera.gameObject.SetActive(true);
         xrRayInteractor.enabled = false;
 
-        var zoomExecutor = FindObjectOfType<ZoomedObjectExecutor>();
-        zoomExecutor.enabled = true;
+        // 👇 Coroutine으로 딜레이 후 실행
+        StartCoroutine(EnableZoomExecutorAfterDelay(1f));
     }
+
+    private IEnumerator EnableZoomExecutorAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        var zoomExecutor = FindObjectOfType<ZoomedObjectExecutor>();
+        if (zoomExecutor != null)
+        {
+            zoomExecutor.enabled = true;
+        }
+    }
+
 
     public void ExitZoomMode()
     {
@@ -59,20 +72,20 @@ public class ZoomManager : MonoBehaviour
     }
 
     private Camera FindZoomCameraForTarget(GameObject targetObject)
-{
-    string targetName = targetObject.name;
+    {
+        string targetName = targetObject.name;
 
-    if (targetName.StartsWith("@"))
-        targetName = targetName.Substring(1);
+        if (targetName.StartsWith("@"))
+            targetName = targetName.Substring(1);
 
         targetName.ToLower();
 
-    foreach (var cam in zoomCameras)
+        foreach (var cam in zoomCameras)
         {
             if (cam != null && cam.name.Contains(targetName))
                 return cam;
         }
-    return null;
-}
+        return null;
+    }
 
 }

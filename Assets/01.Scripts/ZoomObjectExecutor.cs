@@ -47,14 +47,18 @@ public class ZoomedObjectExecutor : MonoBehaviour
             return;
 
         // 줌 상태면 동작 처리
-        var handler = target.GetComponent<ClickItemHandler>();
+        var handler = FindAnyObjectByType<ClickItemHandler>();
         if (handler == null)
             return;
 
         switch (handler.type)
         {
-            case ItemType.Slipper:
+            case ItemType.Slippers:
                 target.SetActive(false);
+                MissionManager.Instance.CompleteCurrentMission();
+                break;
+            case ItemType.Fusebox:
+                target.gameObject.GetComponentInChildren<HingedDoor>().Toggle();
                 MissionManager.Instance.CompleteCurrentMission();
                 break;
         }
@@ -76,7 +80,7 @@ public class ZoomedObjectExecutor : MonoBehaviour
         GameObject target = zoomManager.CurrentTarget;
         if (target == null) return;
 
-        var handler = target.GetComponent<ClickItemHandler>();
+        var handler = FindAnyObjectByType<ClickItemHandler>();
 
         if (handler != null && handler.type == ItemType.Radio)
         {

@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public enum ItemType { Slipper, Door, Fusebox, Radio };
+public enum ItemType { Slippers, Door, Fusebox, Radio };
 
 //TODO: click & zoom이 좋을듯!
 public class ClickItemHandler : MonoBehaviour
@@ -89,30 +89,27 @@ public class ClickItemHandler : MonoBehaviour
 
     private void OnActivatePerformed(InputAction.CallbackContext context)
     {
-        Debug.Log("Hover: activated");
         if (hoveredObject == null) return;
         string targetName = hoveredObject.name;
-        Debug.Log($"Hover: {targetName}");
-
-
 
         if (targetName.StartsWith("@"))
             targetName = targetName.Substring(1);
         if (!Enum.TryParse<ItemType>(targetName, ignoreCase: true, out ItemType hitItemType))
         {
-            Debug.LogWarning($"[ClickHandler] Unknown ItemType: {targetName}");
             return;
         }
-        Debug.Log($"[ClickHandler] Hovered: {hoveredObject.name} (parsed as {hitItemType})");
+
+        type = hitItemType;
+        
         var zoomManager = FindObjectOfType<ZoomManager>();
-        if (zoomManager == null || zoomManager.IsZoomedIn)
-            return;
+        if (zoomManager == null || zoomManager.IsZoomedIn) return;
+
         switch (hitItemType)
         {
             case ItemType.Door:
                 hoveredObject.GetComponent<HingedDoor>()?.Toggle();
                 break;
-            case ItemType.Slipper:
+            case ItemType.Slippers:
             case ItemType.Fusebox:
             case ItemType.Radio:
                 zoomManager.EnterZoomMode(hoveredObject);

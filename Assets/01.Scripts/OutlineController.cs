@@ -71,7 +71,7 @@ public class OutlineController : MonoBehaviour
     private void EnableOutline(GameObject targetObject)
     {
         Outline outline = targetObject.GetComponent<Outline>();
-//        Debug.Log("Hover: EnableOutline: " + targetObject.name);
+
         if (outline == null)
         {
             outline = targetObject.AddComponent<Outline>();
