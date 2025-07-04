@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public enum ItemType { Slippers, Door, Fusebox, Radio };
+public enum ItemType { Slippers, Door, Fusebox, Radio, Velve };
 
 //TODO: click & zoom이 좋을듯!
 public class ClickItemHandler : MonoBehaviour
@@ -112,6 +112,7 @@ public class ClickItemHandler : MonoBehaviour
             case ItemType.Slippers:
             case ItemType.Fusebox:
             case ItemType.Radio:
+            case ItemType.Velve:
                 zoomManager.EnterZoomMode(hoveredObject);
                 break;
         }

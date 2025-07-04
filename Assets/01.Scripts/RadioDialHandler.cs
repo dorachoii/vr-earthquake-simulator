@@ -41,7 +41,7 @@ public class RadioDialHandler : MonoBehaviour
             if (stayTimer >= successDuration && !isCompleted)
             {
                 gridLine.gameObject.GetComponent<MeshRenderer>().material.color = Color.red;
-                MissionManager.Instance.CompleteCurrentMission();
+                MissionManager.Instance.CompleteMission(MissionState.radio);
                 isCompleted = true;
 
                 dialTransform.rotation = Quaternion.identity;

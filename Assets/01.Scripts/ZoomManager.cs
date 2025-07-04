@@ -39,8 +39,7 @@ public class ZoomManager : MonoBehaviour
         mainCamera?.gameObject.SetActive(false);
         activeZoomCamera.gameObject.SetActive(true);
         xrRayInteractor.enabled = false;
-
-        // 👇 Coroutine으로 딜레이 후 실행
+        
         StartCoroutine(EnableZoomExecutorAfterDelay(1f));
     }
 
