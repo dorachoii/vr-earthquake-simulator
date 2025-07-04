@@ -57,13 +57,6 @@ public class ZoomedObjectExecutor : MonoBehaviour
                 target.SetActive(false);
                 MissionManager.Instance.CompleteCurrentMission();
                 break;
-
-            case ItemType.Door:
-            case ItemType.Fusebox:
-                var door = target.GetComponent<HingedDoor>();
-                if (door != null)
-                    door.Toggle();
-                break;
         }
     }
 

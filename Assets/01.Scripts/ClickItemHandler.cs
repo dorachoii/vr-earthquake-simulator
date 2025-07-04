@@ -4,22 +4,36 @@ using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public enum ItemType {Slipper, Door, Fusebox, Radio};
+public enum ItemType { Slipper, Door, Fusebox, Radio };
 
 //TODO: click & zoom이 좋을듯!
 public class ClickItemHandler : MonoBehaviour
 {
     ActionBasedController actionController;
-    public GameObject controller;
 
     public ItemType type;
+
+    public GameObject controller;
+
+    private XRRayInteractor rayInteractor;
+    private GameObject hoveredObject;
+
+    void Start()
+    {
+        rayInteractor = GetComponentInChildren<XRRayInteractor>();
+
+        if (rayInteractor != null)
+        {
+            rayInteractor.hoverEntered.AddListener(OnHoverEnter);
+            rayInteractor.hoverExited.AddListener(OnHoverExit);
+        }
+    }
 
     void OnEnable()
     {
         actionController = controller.GetComponent<ActionBasedController>();
-
+        
         var activeAction = actionController.activateAction.action;
-
         if (activeAction != null)
         {
             activeAction.performed += OnActivatePerformed;
@@ -27,17 +41,38 @@ public class ClickItemHandler : MonoBehaviour
         }
     }
 
-
     void OnDisable()
     {
         var activateAction = actionController.activateAction.action;
         var UIPressAction = actionController.uiPressAction.action;
-
         if (activateAction != null)
             activateAction.performed -= OnActivatePerformed;
-
         if (UIPressAction != null)
             UIPressAction.performed -= OnUIPressPerformed;
+    }
+
+    void OnDestroy()
+    {
+        if (rayInteractor != null)
+        {
+            rayInteractor.hoverEntered.RemoveListener(OnHoverEnter);
+            rayInteractor.hoverExited.RemoveListener(OnHoverExit);
+        }
+    }
+
+    private void OnHoverEnter(HoverEnterEventArgs args)
+    {
+        hoveredObject = args.interactableObject.transform.gameObject;
+        Debug.Log($"[ClickItemHandler] Hover Enter: {hoveredObject.name}");
+    }
+
+    private void OnHoverExit(HoverExitEventArgs args)
+    {
+        if (hoveredObject == args.interactableObject.transform.gameObject)
+        {
+            Debug.Log($"[ClickItemHandler] Hover Exit: {hoveredObject.name}");
+            hoveredObject = null;
+        }
     }
 
     private void OnUIPressPerformed(InputAction.CallbackContext context)
@@ -54,16 +89,34 @@ public class ClickItemHandler : MonoBehaviour
 
     private void OnActivatePerformed(InputAction.CallbackContext context)
     {
-        Debug.Log("actionPerformed");
-        var zoomManager = FindObjectOfType<ZoomManager>();
+        Debug.Log("Hover: activated");
+        if (hoveredObject == null) return;
+        string targetName = hoveredObject.name;
+        Debug.Log($"Hover: {targetName}");
 
-        if (zoomManager != null)
+
+
+        if (targetName.StartsWith("@"))
+            targetName = targetName.Substring(1);
+        if (!Enum.TryParse<ItemType>(targetName, ignoreCase: true, out ItemType hitItemType))
         {
-            if (!zoomManager.IsZoomedIn)
-            {
-                zoomManager.EnterZoomMode(this.gameObject);
-                return;
-            }
+            Debug.LogWarning($"[ClickHandler] Unknown ItemType: {targetName}");
+            return;
+        }
+        Debug.Log($"[ClickHandler] Hovered: {hoveredObject.name} (parsed as {hitItemType})");
+        var zoomManager = FindObjectOfType<ZoomManager>();
+        if (zoomManager == null || zoomManager.IsZoomedIn)
+            return;
+        switch (hitItemType)
+        {
+            case ItemType.Door:
+                hoveredObject.GetComponent<HingedDoor>()?.Toggle();
+                break;
+            case ItemType.Slipper:
+            case ItemType.Fusebox:
+            case ItemType.Radio:
+                zoomManager.EnterZoomMode(hoveredObject);
+                break;
         }
     }
 }
