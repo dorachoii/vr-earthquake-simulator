@@ -63,13 +63,15 @@ public class ZoomManager : MonoBehaviour
     string targetName = targetObject.name;
 
     if (targetName.StartsWith("@"))
-        targetName = targetName.Substring(1); 
+        targetName = targetName.Substring(1);
+
+        targetName.ToLower();
 
     foreach (var cam in zoomCameras)
-    {
-        if (cam != null && cam.name.Contains(targetName))
-            return cam;
-    }
+        {
+            if (cam != null && cam.name.Contains(targetName))
+                return cam;
+        }
     return null;
 }
 

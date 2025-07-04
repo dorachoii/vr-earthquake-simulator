@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public enum ItemType {Slipper, Door, Fusebox};
+public enum ItemType {Slipper, Door, Fusebox, Radio};
 
 //TODO: click & zoom이 좋을듯!
 public class ClickItemHandler : MonoBehaviour
