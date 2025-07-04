@@ -4,21 +4,26 @@ using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 using UnityEngine.XR.Interaction.Toolkit;
 
+public enum ItemType {Slipper, Door, Fusebox};
+
+//TODO: click & zoom이 좋을듯!
 public class ClickItemHandler : MonoBehaviour
 {
     ActionBasedController actionController;
     public GameObject controller;
 
+    public ItemType type;
+
     void OnEnable()
     {
         actionController = controller.GetComponent<ActionBasedController>();
 
+        var activeAction = actionController.activateAction.action;
 
-        var action = actionController.activateAction.action;
-        if (action != null)
+        if (activeAction != null)
         {
-            action.performed += OnActivatePerformed;
-            action.Enable();
+            activeAction.performed += OnActivatePerformed;
+            activeAction.Enable();
         }
     }
 
@@ -26,10 +31,26 @@ public class ClickItemHandler : MonoBehaviour
     void OnDisable()
     {
         var activateAction = actionController.activateAction.action;
+        var UIPressAction = actionController.uiPressAction.action;
+
         if (activateAction != null)
             activateAction.performed -= OnActivatePerformed;
+
+        if (UIPressAction != null)
+            UIPressAction.performed -= OnUIPressPerformed;
     }
 
+    private void OnUIPressPerformed(InputAction.CallbackContext context)
+    {
+        var zoomManager = FindObjectOfType<ZoomManager>();
+
+        if (zoomManager != null)
+        {
+            zoomManager.ExitZoomMode();
+            gameObject.GetComponent<Outline>().enabled = false;
+            return;
+        }
+    }
 
     private void OnActivatePerformed(InputAction.CallbackContext context)
     {
@@ -38,22 +59,11 @@ public class ClickItemHandler : MonoBehaviour
 
         if (zoomManager != null)
         {
-            zoomManager.EnterZoomMode(this.gameObject);
-            return;
+            if (!zoomManager.IsZoomedIn)
+            {
+                zoomManager.EnterZoomMode(this.gameObject);
+                return;
+            }
         }
     }
-
-
-    // void HandleSlipperClick()
-    // {
-    //     OnClickItemCompleted?.Invoke(type);
-    //     gameObject.SetActive(false);
-    //     Debug.Log("슬리퍼 클릭됨!");
-    // }
-
-    // void HandleHingedClick()
-    // {
-    //     OnClickItemCompleted?.Invoke(type);
-    //     gameObject.GetComponent<HingedDoor>().Toggle();
-    // }
 }

@@ -7,7 +7,6 @@ public class ZoomManager : MonoBehaviour
     private XRRayInteractor xrRayInteractor;
 
     public Camera[] zoomCameras;
-    public GameObject zoomInputUI;
 
     private bool isZoomedIn = false;
     private Camera activeZoomCamera = null;
@@ -33,26 +32,30 @@ public class ZoomManager : MonoBehaviour
         if (activeZoomCamera == null) return;
 
         currentTargetObject = targetObject;
+        Debug.Log($"currentTarget: {currentTargetObject.name}");
         isZoomedIn = true;
 
         mainCamera?.gameObject.SetActive(false);
         activeZoomCamera.gameObject.SetActive(true);
         xrRayInteractor.enabled = false;
-        zoomInputUI?.SetActive(true);
+
+        var zoomExecutor = FindObjectOfType<ZoomedObjectExecutor>();
+        zoomExecutor.enabled = true;
     }
 
     public void ExitZoomMode()
     {
         if (!isZoomedIn) return;
 
-        mainCamera?.gameObject.SetActive(true);
         activeZoomCamera?.gameObject.SetActive(false);
         xrRayInteractor.enabled = true;
-        zoomInputUI?.SetActive(false);
 
         activeZoomCamera = null;
         currentTargetObject = null;
         isZoomedIn = false;
+
+        var zoomExecutor = FindObjectOfType<ZoomedObjectExecutor>();
+        zoomExecutor.enabled = false;
     }
 
     private Camera FindZoomCameraForTarget(GameObject targetObject)
@@ -62,15 +65,11 @@ public class ZoomManager : MonoBehaviour
     if (targetName.StartsWith("@"))
         targetName = targetName.Substring(1); 
 
-    Debug.Log($"[ZoomManager] Searching for ZoomCam matching: {targetName}");
-
     foreach (var cam in zoomCameras)
     {
         if (cam != null && cam.name.Contains(targetName))
             return cam;
     }
-
-    Debug.LogWarning($"[ZoomManager] No zoom camera found for: {targetName}");
     return null;
 }
 

@@ -120,15 +120,4 @@ public class MissionManager : MonoBehaviour
         }
     }
 
-
-    public MissionState GetCurrentMissionState()
-    {
-        if (currentMissionIndex < missions.Count)
-        {
-            return missions[currentMissionIndex].missionState;
-        }
-        return MissionState.Complete;
-    }
-
-
 }
