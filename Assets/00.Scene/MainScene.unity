@@ -262,7 +262,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: bbff651ba0887e94f9f7b3fead39c5c3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 687b0e25c6f57c64ca607c0f40f24460, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1440,18 +1440,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: bc348f9828c9ab547ab43e47c9a2e9cc, type: 3}
   m_PrefabInstance: {fileID: 1002254973}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &63650757
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 63650753}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a7db842fcc3d424695277e67ddde78f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!65 &63650760
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -23928,7 +23916,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 923035527}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -23941,7 +23929,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 757c1c467a61df641b8807952fd3405b, type: 2}
+  - {fileID: 2100000, guid: 5ce39dab88fc12a42a85823e6488e93e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -25370,7 +25358,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: ed8996cb2fb8c8d42add357d317b3b6d, type: 2}
     - target: {fileID: 919132149155446097, guid: bc348f9828c9ab547ab43e47c9a2e9cc, type: 3}
       propertyPath: m_Name
-      value: '@FlashLight'
+      value: '@flashlight'
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: bc348f9828c9ab547ab43e47c9a2e9cc, type: 3}
       propertyPath: m_Layer
@@ -25405,13 +25393,13 @@ PrefabInstance:
       addedObject: {fileID: 63650764}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bc348f9828c9ab547ab43e47c9a2e9cc, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 63650757}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bc348f9828c9ab547ab43e47c9a2e9cc, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1002254980}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bc348f9828c9ab547ab43e47c9a2e9cc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1002254984}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bc348f9828c9ab547ab43e47c9a2e9cc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1002254987}
   m_SourcePrefab: {fileID: 100100000, guid: bc348f9828c9ab547ab43e47c9a2e9cc, type: 3}
 --- !u!4 &1002254974 stripped
 Transform:
@@ -25582,7 +25570,7 @@ MonoBehaviour:
   m_SmoothPosition: 0
   m_SmoothPositionAmount: 8
   m_TightenPosition: 0.1
-  m_TrackRotation: 1
+  m_TrackRotation: 0
   m_SmoothRotation: 0
   m_SmoothRotationAmount: 8
   m_TightenRotation: 0.1
@@ -25613,8 +25601,22 @@ MonoBehaviour:
   m_RetainTransformParent: 1
   m_AttachPointCompatibilityMode: 0
   m_StartingSingleGrabTransformers: []
-  m_StartingMultipleGrabTransformers: []
+  m_StartingMultipleGrabTransformers:
+  - {fileID: 0}
   m_AddDefaultGrabTransformers: 1
+--- !u!114 &1002254987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 63650753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a37e0f394da314488cde353bb1590c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashlightDownDirection: {x: 0, y: 1, z: 0}
 --- !u!65 &1012862741
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -48575,7 +48577,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2123233776
 Transform:
   m_ObjectHideFlags: 0
