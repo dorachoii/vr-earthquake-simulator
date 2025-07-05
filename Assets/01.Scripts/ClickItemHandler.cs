@@ -108,6 +108,7 @@ public class ClickItemHandler : MonoBehaviour
         {
             case ItemType.Door:
                 hoveredObject.GetComponent<HingedDoor>()?.Toggle();
+                MissionManager.Instance.CompleteMission(MissionState.door);
                 break;
             case ItemType.Slippers:
             case ItemType.Fusebox:

@@ -73,9 +73,6 @@ public class MissionManager : MonoBehaviour
         missions.Add(new MissionData { missionState = MissionState.Complete, missionText = "Mission Complete!" });
     }
 
-    /// <summary>
-    /// 미션 상태에 해당하는 미션을 완료 처리
-    /// </summary>
     public void CompleteMission(MissionState state)
     {
         foreach (var mission in missions)
@@ -83,15 +80,32 @@ public class MissionManager : MonoBehaviour
             if (mission.missionState == state && !mission.isCompleted)
             {
                 mission.isCompleted = true;
-                Debug.Log($"[MissionManager] Mission completed: {state}");
+
+                if (IsMainMissionsCompleted())
+                {
+                    Debug.Log("[MissionManager] Main 5 missions complete → Trigger Aftershock");
+                    GameManager.Instance.SetGameState(GameState.Aftershock);
+                }
+
                 UpdateMissionUI();
                 TryAdvanceToNextMission();
                 return;
             }
         }
 
-        Debug.LogWarning($"[MissionManager] Mission not found or already completed: {state}");
     }
+
+    private bool IsMainMissionsCompleted()
+    {
+        int count = Mathf.Min(5, missions.Count);
+        for (int i = 0; i < count; i++)
+        {
+            if (!missions[i].isCompleted)
+                return false;
+        }
+        return true;
+    }
+
 
     private void TryAdvanceToNextMission()
     {
@@ -120,13 +134,13 @@ public class MissionManager : MonoBehaviour
     }
 
     private int GetFirstIncompleteMissionIndex()
-{
-    for (int i = 0; i < missions.Count; i++)
     {
-        if (!missions[i].isCompleted)
-            return i;
+        for (int i = 0; i < missions.Count; i++)
+        {
+            if (!missions[i].isCompleted)
+                return i;
+        }
+        return -1;
     }
-    return -1; 
-}
 
 }

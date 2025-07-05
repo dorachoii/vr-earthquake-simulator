@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviour
     public GameState currentGameState;
     public MissionState currentMission;
 
+    public static event System.Action<GameState> OnGameStateChanged;
+
     [Header("Shake Management")]
     [SerializeField] private bool enableShakeOnEarthquake = true;
     [SerializeField] private float earthquakeShakeDuration = 10f;
@@ -59,7 +61,8 @@ public class GameManager : MonoBehaviour
         GameState previousState = currentGameState;
         currentGameState = state;
 
-        HandleShakeOnStateChange(previousState, state);
+        OnGameStateChanged?.Invoke(state);
+        //HandleShakeOnStateChange(previousState, state);
     }
 
     public void SetMission(MissionState mission)

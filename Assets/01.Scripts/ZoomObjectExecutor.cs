@@ -58,6 +58,9 @@ public class ZoomedObjectExecutor : MonoBehaviour
                 MissionManager.Instance.CompleteMission(MissionState.slippers);
                 break;
             case ItemType.Fusebox:
+                target.gameObject.GetComponentInChildren<HingedDoor>().Toggle();
+                MissionManager.Instance.CompleteMission(MissionState.fusebox);
+                break;
             case ItemType.Velve:
                 // TODO: 현재 각도 체크하도록 해야함!
                 target.gameObject.GetComponentInChildren<HingedDoor>().Toggle();
