@@ -67,6 +67,8 @@ public class AfterShockController : MonoBehaviour
         // 7. 카메라 위치 복원
         if (camTransform != null)
             camTransform.localPosition = originalCamPos;
+
+        MissionManager.Instance.AfterShocked();
     }
 
     private IEnumerator BlinkWarning()

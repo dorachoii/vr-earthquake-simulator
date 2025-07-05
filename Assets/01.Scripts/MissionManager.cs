@@ -66,11 +66,36 @@ public class MissionManager : MonoBehaviour
         missions.Add(new MissionData { missionState = MissionState.fusebox, missionText = "Check the Fusebox" });
         missions.Add(new MissionData { missionState = MissionState.door, missionText = "Open the Door" });
         missions.Add(new MissionData { missionState = MissionState.gasVelve, missionText = "Turn off the Gas Valve" });
+    }
+
+    void CreateNewMissions()
+    {
+        missions.Clear();
 
         missions.Add(new MissionData { missionState = MissionState.flashlight, missionText = "Get the Flashlight" });
         missions.Add(new MissionData { missionState = MissionState.tablet, missionText = "Check the Tablet" });
         missions.Add(new MissionData { missionState = MissionState.Escape, missionText = "Escape!" });
-        missions.Add(new MissionData { missionState = MissionState.Complete, missionText = "Mission Complete!" });
+    }
+
+    public void AfterShocked()
+    {
+        // 여진 후 새로운 미션으로 교체
+        CreateNewMissions();
+        
+        // 미션 인덱스 초기화
+        currentMissionIndex = 0;
+
+        // 초기 상태 전달
+        if (missions.Count > 0)
+            GameManager.Instance.SetMission(missions[0].missionState);
+
+        if (missionUIManager != null)
+        {
+            var initialMissions = missions.GetRange(0, Mathf.Min(3, missions.Count));
+            missionUIManager.InitializeMissionUI(initialMissions);
+        }
+
+        UpdateMissionUI();
     }
 
     public void CompleteMission(MissionState state)
