@@ -173,7 +173,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationOffset: {x: 100, y: 0, z: 0}
-  rotationSpeed: 2
+  rotationSpeed: 1
+  lights:
+  - {fileID: 1143481655}
+  - {fileID: 752027878}
 --- !u!1 &3245434
 GameObject:
   m_ObjectHideFlags: 0
@@ -45157,6 +45160,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationOffset: {x: 0, y: 0, z: -30}
   rotationSpeed: 2
+  lights: []
 --- !u!1 &1938172323
 GameObject:
   m_ObjectHideFlags: 0
@@ -53640,6 +53644,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationOffset: {x: 0, y: 0, z: -70}
   rotationSpeed: 2
+  lights: []
 --- !u!23 &3755035476318236485
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -56723,6 +56728,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationOffset: {x: 0, y: 0, z: 30}
   rotationSpeed: 2
+  lights: []
 --- !u!1 &7093611274223694255
 GameObject:
   m_ObjectHideFlags: 0

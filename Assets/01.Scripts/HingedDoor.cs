@@ -11,6 +11,9 @@ public class HingedDoor : MonoBehaviour
     public Vector3 rotationOffset = new Vector3(100, 0, 0);
     public float rotationSpeed = 2f;
 
+    [Header("Light Control")]
+    public GameObject[] lights;
+
     public Action onOpend;
     public Action onClosed;
 
@@ -49,7 +52,41 @@ public class HingedDoor : MonoBehaviour
         targetToRotate.localRotation = to;
         isOpen = !isOpen;
 
-        if (isOpen) onOpend?.Invoke();
-        else onClosed?.Invoke();
+        if (isOpen) 
+        {
+            onOpend?.Invoke();
+            TurnOffLights();
+        }
+        else 
+        {
+            onClosed?.Invoke();
+            TurnOnLights();
+        }
+    }
+
+    private void TurnOffLights()
+    {
+        if (lights == null || lights.Length == 0) return;
+        
+        foreach (var obj in lights)
+        {
+            if (obj != null)
+            {
+                obj.SetActive(false);
+            }
+        }
+    }
+
+    private void TurnOnLights()
+    {
+        if (lights == null || lights.Length == 0) return;
+        
+        foreach (var obj in lights)
+        {
+            if (obj != null)
+            {
+                obj.SetActive(true);
+            }
+        }
     }
 }
