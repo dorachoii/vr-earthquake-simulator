@@ -117,7 +117,20 @@ public class MissionManager : MonoBehaviour
                 return;
             }
         }
+    }
 
+    public void RevertMission(MissionState state)
+    {
+        foreach (var mission in missions)
+        {
+            if (mission.missionState == state && mission.isCompleted)
+            {
+                mission.isCompleted = false;
+                UpdateMissionUI();
+                TryAdvanceToNextMission();
+                return;
+            }
+        }
     }
 
     private bool IsMainMissionsCompleted()

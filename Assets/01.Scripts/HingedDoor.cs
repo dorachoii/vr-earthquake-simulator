@@ -18,6 +18,8 @@ public class HingedDoor : MonoBehaviour
     private Quaternion endRot;
     private bool isOpen = false;
 
+    public bool IsOpen => isOpen;
+
     private void Start()
     {
         if (targetToRotate == null)

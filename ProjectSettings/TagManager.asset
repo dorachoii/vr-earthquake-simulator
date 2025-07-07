@@ -9,6 +9,7 @@ TagManager:
   - grabbable
   - Ground
   - Controller
+  - MissionDoor
   layers:
   - Default
   - TransparentFX

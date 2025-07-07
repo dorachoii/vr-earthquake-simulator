@@ -64,12 +64,22 @@ public class ZoomedObjectExecutor : MonoBehaviour
                 MissionManager.Instance.CompleteMission(MissionState.slippers);
                 break;
             case ItemType.Fusebox:
-                target.gameObject.GetComponentInChildren<HingedDoor>().Toggle();
-                MissionManager.Instance.CompleteMission(MissionState.fusebox);
+                var fuseboxDoor = target.gameObject.GetComponentInChildren<HingedDoor>();
+                if (fuseboxDoor != null)
+                {
+                    fuseboxDoor.onOpend += () => MissionManager.Instance.CompleteMission(MissionState.fusebox);
+                    fuseboxDoor.onClosed += () => MissionManager.Instance.RevertMission(MissionState.fusebox);
+                    fuseboxDoor.Toggle();
+                }
                 break;
             case ItemType.Velve:
-                target.gameObject.GetComponentInChildren<HingedDoor>().Toggle();
-                MissionManager.Instance.CompleteMission(MissionState.gasVelve);
+                var velveDoor = target.gameObject.GetComponentInChildren<HingedDoor>();
+                if (velveDoor != null)
+                {
+                    velveDoor.onOpend += () => MissionManager.Instance.CompleteMission(MissionState.gasVelve);
+                    velveDoor.onClosed += () => MissionManager.Instance.RevertMission(MissionState.gasVelve);
+                    velveDoor.Toggle();
+                }
                 break;
             case ItemType.Ipad:
                 if (!hasStoredOriginalTransform)

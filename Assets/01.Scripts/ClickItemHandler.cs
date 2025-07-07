@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 using UnityEngine.XR.Interaction.Toolkit;
+using System.Collections;
 
 public enum ItemType { Slippers, Door, Fusebox, Radio, Velve, Ipad };
 
@@ -105,8 +106,17 @@ public class ClickItemHandler : MonoBehaviour
         switch (hitItemType)
         {
             case ItemType.Door:
-                hoveredObject.GetComponent<HingedDoor>()?.Toggle();
-                MissionManager.Instance.CompleteMission(MissionState.door);
+                var hingedDoor = hoveredObject.GetComponent<HingedDoor>();
+                if (hingedDoor != null)
+                {
+                    if (hoveredObject.CompareTag("MissionDoor"))
+                    {
+                        var door = hingedDoor;
+                        door.onOpend += () => MissionManager.Instance.CompleteMission(MissionState.door);
+                        door.onClosed += () => MissionManager.Instance.RevertMission(MissionState.door);
+                    }
+                    hingedDoor.Toggle();
+                }
                 break;
             case ItemType.Slippers:
             case ItemType.Fusebox:

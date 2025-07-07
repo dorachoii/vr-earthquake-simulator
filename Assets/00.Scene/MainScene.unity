@@ -56584,7 +56584,7 @@ GameObject:
   - component: {fileID: 7092393608605105886}
   m_Layer: 0
   m_Name: '@door'
-  m_TagString: movable
+  m_TagString: MissionDoor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
