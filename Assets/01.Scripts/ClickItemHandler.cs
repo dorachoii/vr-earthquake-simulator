@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 using UnityEngine.XR.Interaction.Toolkit;
 using System.Collections;
 
-public enum ItemType { Slippers, Door, Fusebox, Radio, Velve, Ipad };
+public enum ItemType { Slippers, Door, Fusebox, Radio, Velve, Ipad, flashlight };
 
 //TODO: click & zoom이 좋을듯!
 public class ClickItemHandler : MonoBehaviour
