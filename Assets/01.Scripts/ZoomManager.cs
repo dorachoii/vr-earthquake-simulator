@@ -33,26 +33,23 @@ public class ZoomManager : MonoBehaviour
         if (activeZoomCamera == null) return;
 
         currentTargetObject = targetObject;
-        Debug.Log($"currentTarget: {currentTargetObject.name}");
         isZoomedIn = true;
 
         activeZoomCamera.gameObject.SetActive(true);
         xrRayInteractor.enabled = false;
         
-        StartCoroutine(EnableZoomExecutorAfterDelay(1f));
-    }
-
-    private IEnumerator EnableZoomExecutorAfterDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-
         var zoomExecutor = FindObjectOfType<ZoomedObjectExecutor>();
         if (zoomExecutor != null)
         {
             zoomExecutor.enabled = true;
         }
+        
+        var clickHandler = FindObjectOfType<ClickItemHandler>();
+        if (clickHandler != null)
+        {
+            clickHandler.enabled = false;
+        }
     }
-
 
     public void ExitZoomMode()
     {
@@ -66,7 +63,16 @@ public class ZoomManager : MonoBehaviour
         isZoomedIn = false;
 
         var zoomExecutor = FindObjectOfType<ZoomedObjectExecutor>();
-        zoomExecutor.enabled = false;
+        if (zoomExecutor != null)
+        {
+            zoomExecutor.enabled = false;
+        }
+        
+        var clickHandler = FindObjectOfType<ClickItemHandler>();
+        if (clickHandler != null)
+        {
+            clickHandler.enabled = true;
+        }
     }
 
     private Camera FindZoomCameraForTarget(GameObject targetObject)
@@ -85,5 +91,4 @@ public class ZoomManager : MonoBehaviour
         }
         return null;
     }
-
 }

@@ -30,6 +30,8 @@ public class ZoomedObjectExecutor : MonoBehaviour
             select.started += ctx => StartHold();
             select.canceled += ctx => StopHold();
         }
+        
+        enabled = false;
     }
 
     private void OnDestroy()
