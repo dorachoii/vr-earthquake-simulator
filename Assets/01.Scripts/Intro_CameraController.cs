@@ -1,19 +1,11 @@
 using System.Collections;
 using UnityEngine;
 
-public enum ShakeMode
-{
-    IntroMovingShake, // 초반 카메라 이동 + 흔들림
-    StaticShake       // 여진 중 고정 위치에서 흔들림
-}
-
 public class Intro_CameraController : MonoBehaviour
 {
-    [Header("Cameras")]
     public Camera shakeCam;
-    public Camera mainCam;
 
-    [Header("Movement (Intro Only)")]
+    [Header("Movement")]
     public GameObject stopPoint;
     public float moveSpeed = 6.0f;
 
@@ -24,76 +16,46 @@ public class Intro_CameraController : MonoBehaviour
     [Header("Fade Effect")]
     public Intro_ScreenFader fader;
 
-    [Header("Shake Mode")]
-    public ShakeMode mode = ShakeMode.IntroMovingShake;
-
+    private bool isMoving = false;
     private bool isShaking = false;
+    private bool hasReachedDestination = false;
     private float elapsedShakeTime = 0f;
     private Vector3 originalShakeCamOffset;
 
-    void Awake()
-    {
-        if (mode == ShakeMode.StaticShake)
-        {
-            enabled = false; // 정적 모드는 GameState 이벤트로 실행되므로 초기 비활성화
-        }
-    }
-
-    void OnEnable()
-    {
-        GameManager.OnGameStateChanged += HandleGameStateChanged;
-    }
-
-    void OnDisable()
-    {
-        GameManager.OnGameStateChanged -= HandleGameStateChanged;
-    }
-
     void Start()
     {
-        if (mode == ShakeMode.IntroMovingShake)
-        {
-            shakeCam.gameObject.SetActive(true);
-            mainCam?.gameObject.SetActive(false);
-            originalShakeCamOffset = shakeCam.transform.localPosition - transform.position;
-            isShaking = true;
-        }
-        else
-        {
-            shakeCam.gameObject.SetActive(false);
-            originalShakeCamOffset = Vector3.zero;
-        }
-
+        shakeCam.gameObject.SetActive(true);
+        originalShakeCamOffset = shakeCam.transform.localPosition - transform.position;
+        isMoving = true;
+        isShaking = true;
         elapsedShakeTime = 0f;
     }
 
     void Update()
     {
-        if (!isShaking) return;
+        if (!isMoving || hasReachedDestination) return;
 
-        elapsedShakeTime += Time.deltaTime;
+        transform.position = Vector3.MoveTowards(transform.position, stopPoint.transform.position, moveSpeed * Time.deltaTime);
 
-        if (mode == ShakeMode.IntroMovingShake)
+        if (isShaking)
         {
-            // 이동하면서 흔들림
-            transform.position = Vector3.MoveTowards(transform.position, stopPoint.transform.position, moveSpeed * Time.deltaTime);
+            elapsedShakeTime += Time.deltaTime;
+            ApplyShake();
+
+            if (elapsedShakeTime >= shakeDuration)
+            {
+                isShaking = false;
+            }
         }
 
-        ApplyShake();
-
-        if (elapsedShakeTime >= shakeDuration)
+        if (Vector3.Distance(transform.position, stopPoint.transform.position) < 0.1f)
         {
-            isShaking = false;
+            hasReachedDestination = true;
+            isMoving = false;
 
-            if (mode == ShakeMode.IntroMovingShake)
-            {
-                StartCoroutine(DoCameraSwitchWithFade());
-            }
-            else
-            {
-                shakeCam.gameObject.SetActive(false); // 여진 끝나면 그냥 꺼짐
-            }
-
+            GameManager.Instance.SetGameState(GameState.Mission);
+            
+            StartCoroutine(DoCameraSwitchWithFade());
             enabled = false;
         }
     }
@@ -116,25 +78,10 @@ public class Intro_CameraController : MonoBehaviour
         }
 
         shakeCam.gameObject.SetActive(false);
-        mainCam?.gameObject.SetActive(true);
 
         if (fader != null)
         {
             fader.StartFadeIn();
-        }
-    }
-
-    private void HandleGameStateChanged(GameState newState)
-    {
-        Debug.Log("IntroCameraControl- HandleGmaeState");
-        
-        if (newState == GameState.Aftershock && mode == ShakeMode.StaticShake)
-        {
-            elapsedShakeTime = 0f;
-            isShaking = true;
-            enabled = true;
-
-            shakeCam.gameObject.SetActive(true);
         }
     }
 }

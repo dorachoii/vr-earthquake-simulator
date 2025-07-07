@@ -34,8 +34,6 @@ public class ShakeManager : MonoBehaviour
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
-
-        SetupShakeConfigs();
     }
 
     void OnEnable()
@@ -58,32 +56,26 @@ public class ShakeManager : MonoBehaviour
         if (isShaking) UpdateShake();
     }
 
-    private void SetupShakeConfigs()
-    {
-        stateShakeConfigs = new()
-        {
-            { GameState.Earthquake, (10f, 0.15f, 15f) },
-            { GameState.Aftershock, (5f, 0.045f, 10.5f) },
-        };
-    }
-
     private void HandleGameStateChanged(GameState newState)
-    {
-        if (newState == GameState.Escape)
+    { 
+        if (newState == GameState.Mission || newState == GameState.Escape)
         {
             StopShake();
-            Debug.Log("[ShakeManager] Stopped shake (Escape).");
             return;
         }
 
-        if (stateShakeConfigs.TryGetValue(newState, out var config))
+        if (newState == GameState.MainShock)
         {
-            Debug.Log($"[ShakeManager] Shake started from state: {newState}");
-            StartShakeWithSettings(config.duration, config.intensity, config.frequency);
+            SetShakeSettings(10f, 0.15f, 15f); 
+            StartShake();
+            return;
         }
-        else
+
+        if (newState == GameState.Aftershock)
         {
-            Debug.LogWarning($"[ShakeManager] No shake config found for {newState}");
+            SetShakeSettings(5f, 0.05f, 10f);  
+            StartShake();
+            return;
         }
     }
 
@@ -204,28 +196,4 @@ public class ShakeManager : MonoBehaviour
     public bool IsShaking() => isShaking;
 
     public float GetRemainingShakeTime() => Mathf.Max(0f, defaultDuration - shakeTimer);
-
-    public void AddShakeObject(GameObject obj)
-    {
-        if (obj == null || shakeObjects.Contains(obj)) return;
-
-        shakeObjects.Add(obj);
-        Rigidbody rb = obj.GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            objectRigidbodies[obj] = rb;
-            originalPositions[obj] = obj.transform.position;
-            originalRotations[obj] = obj.transform.rotation;
-        }
-    }
-
-    public void RemoveShakeObject(GameObject obj)
-    {
-        if (!shakeObjects.Contains(obj)) return;
-
-        shakeObjects.Remove(obj);
-        objectRigidbodies.Remove(obj);
-        originalPositions.Remove(obj);
-        originalRotations.Remove(obj);
-    }
 }
