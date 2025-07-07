@@ -63,14 +63,12 @@ public class ClickItemHandler : MonoBehaviour
     private void OnHoverEnter(HoverEnterEventArgs args)
     {
         hoveredObject = args.interactableObject.transform.gameObject;
-        Debug.Log($"[ClickItemHandler] Hover Enter: {hoveredObject.name}");
     }
 
     private void OnHoverExit(HoverExitEventArgs args)
     {
         if (hoveredObject == args.interactableObject.transform.gameObject)
         {
-            Debug.Log($"[ClickItemHandler] Hover Exit: {hoveredObject.name}");
             hoveredObject = null;
         }
     }

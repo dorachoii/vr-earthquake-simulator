@@ -86,7 +86,6 @@ public class ZoomedObjectExecutor : MonoBehaviour
     {
         if (zoomManager != null && zoomManager.IsZoomedIn)
         {
-            // 태블릿이면 원래 위치로 복원
             GameObject target = zoomManager.CurrentTarget;
             if (target != null && hasStoredOriginalTransform)
             {
@@ -113,6 +112,7 @@ public class ZoomedObjectExecutor : MonoBehaviour
 
         if (handler != null && handler.type == ItemType.Radio)
         {
+            target.GetComponentInChildren<RadioDialHandler>().TurnOnRadio();
             initialHandRotation = gameObject.transform.rotation;
             isHolding = true;
         }
@@ -164,7 +164,7 @@ public class ZoomedObjectExecutor : MonoBehaviour
         Quaternion startRotation = target.transform.rotation;
         Vector3 targetPosition = zoomCamera.transform.position + zoomCamera.transform.forward * 3f; // 줌 카메라 앞 2f 거리
         Quaternion targetRotation = Quaternion.LookRotation(- zoomCamera.transform.forward, Vector3.up); // 카메라를 향하는 회전
-        float duration = 1.0f; // 1초 동안 이동
+        float duration = 1.0f; 
         float elapsed = 0f;
 
         while (elapsed < duration)
@@ -172,7 +172,6 @@ public class ZoomedObjectExecutor : MonoBehaviour
             elapsed += Time.deltaTime;
             float t = elapsed / duration;
             
-            // 부드러운 이동과 회전 (EaseInOut)
             float smoothT = Mathf.SmoothStep(0f, 1f, t);
             target.transform.position = Vector3.Lerp(startPosition, targetPosition, smoothT);
             target.transform.rotation = Quaternion.Lerp(startRotation, targetRotation, smoothT);
@@ -180,7 +179,6 @@ public class ZoomedObjectExecutor : MonoBehaviour
             yield return null;
         }
 
-        // 정확한 위치와 회전으로 설정
         target.transform.position = targetPosition;
         target.transform.rotation = targetRotation;
     }
@@ -197,7 +195,6 @@ public class ZoomedObjectExecutor : MonoBehaviour
             elapsed += Time.deltaTime;
             float t = elapsed / duration;
             
-            // 부드러운 이동과 회전 (EaseInOut)
             float smoothT = Mathf.SmoothStep(0f, 1f, t);
             target.transform.position = Vector3.Lerp(startPosition, originalTabletPosition, smoothT);
             target.transform.rotation = Quaternion.Lerp(startRotation, originalTabletRotation, smoothT);
@@ -205,11 +202,9 @@ public class ZoomedObjectExecutor : MonoBehaviour
             yield return null;
         }
 
-        // 정확한 위치와 회전으로 설정
         target.transform.position = originalTabletPosition;
         target.transform.rotation = originalTabletRotation;
         
-        // 원래 위치 복원 완료 후 플래그 리셋
         hasStoredOriginalTransform = false;
     }
 }

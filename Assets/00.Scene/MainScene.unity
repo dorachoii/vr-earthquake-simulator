@@ -4629,13 +4629,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shakeCam: {fileID: 271284286}
-  mainCam: {fileID: 1731298971}
   stopPoint: {fileID: 772960595}
   moveSpeed: 6
   shakeRange: 0.05
   shakeDuration: 3
   fader: {fileID: 53624218}
-  mode: 0
 --- !u!81 &271284285
 AudioListener:
   m_ObjectHideFlags: 0
@@ -21824,10 +21822,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentGameState: 0
   currentMission: 0
-  enableShakeOnEarthquake: 1
-  earthquakeShakeDuration: 10
-  earthquakeShakeIntensity: 0.15
-  earthquakeShakeFrequency: 15
 --- !u!1 &802815672
 GameObject:
   m_ObjectHideFlags: 0
@@ -37768,7 +37762,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 90ffcd0b0918ecf46b8de1de5d7282c4, type: 2}
+  - {fileID: 3954541591348569408, guid: bce6c8b80f5e8fc48a49bae2a1035683, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -54163,7 +54157,6 @@ GameObject:
   - component: {fileID: 6722178033919867300}
   - component: {fileID: 6722178033919867299}
   - component: {fileID: 6722178033919867301}
-  - component: {fileID: 6722178033919867302}
   - component: {fileID: 6722178033919867303}
   m_Layer: 0
   m_Name: dial
@@ -56240,23 +56233,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.01, y: 0.01, z: 0.01}
   m_Center: {x: -0.001, y: -0.005, z: 0.005}
---- !u!114 &6722178033919867302
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4472582719994461119}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43364de8927b39846a10f8219be1861b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  grabbingHand: {fileID: 0}
-  initialHandRotation: {x: 0, y: 0, z: 0, w: 0}
-  initialDialRotation: {x: 0, y: 0, z: 0, w: 0}
-  radioDialHandler: {fileID: 0}
-  isGrabbing: 0
 --- !u!114 &6722178033919867303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -56271,6 +56247,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialTransform: {fileID: 729963407}
   gridLine: {fileID: 8476289294413632458}
+  powerBtn: {fileID: 1480390879}
+  broadCast: {fileID: 1572681373}
+  noise: {fileID: 337624467}
+  maxVolume: 1
+  minVolume: 0
+  correctFrequencyMin: -0.03
+  correctFrequencyMax: -0.02
 --- !u!33 &6730026119217265935
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -57915,7 +57898,7 @@ Transform:
   m_GameObject: {fileID: 1018457525609984814}
   serializedVersion: 2
   m_LocalRotation: {x: 0.00000008967768, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.05, y: 0.1992, z: 0}
+  m_LocalPosition: {x: 0.03, y: 0.1992, z: 0}
   m_LocalScale: {x: 9.748466, y: 9.748466, z: 9.748466}
   m_ConstrainProportionsScale: 0
   m_Children: []

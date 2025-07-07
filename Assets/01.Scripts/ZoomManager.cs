@@ -36,7 +36,6 @@ public class ZoomManager : MonoBehaviour
         Debug.Log($"currentTarget: {currentTargetObject.name}");
         isZoomedIn = true;
 
-        mainCamera?.gameObject.SetActive(false);
         activeZoomCamera.gameObject.SetActive(true);
         xrRayInteractor.enabled = false;
         
