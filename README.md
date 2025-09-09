@@ -1,6 +1,6 @@
 ## 📦 Project Information
 - **Platform**: Web  
-- **Duration**: 2ヶ月、チーム制作（アイテムインタラクション担当）
+- **Duration**: 2ヶ月(2023)、チーム制作（アイテムインタラクション担当）
 
 ### 📸 Screenshots
 <img src="https://github.com/user-attachments/assets/aaafef01-cc8e-49e3-8dd9-a71ae6da9876" alt="Screenshot 1" width="250"/>
